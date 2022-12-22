@@ -1,0 +1,200 @@
+openapi: 3.0.1
+info:
+  title: Api Documentation
+  description: |-
+    Overview
+    
+        This API is an example for Software Arquitect for vodafone
+        
+    API Explorer
+        
+        This API is a warehouse service to add, update, delete and show all availables devices
+  termsOfService: http://en.wikipedia.org/wiki/Terms_of_service
+  contact:
+    name: Pablo Francisco García Domínguez
+    email: pablogarciadom@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: "1.0"
+servers:
+- url: //localhost:8080/
+tags:
+- name: ware-house-controller
+  description: Ware House Controller
+paths:
+  /warehouse/avilable-devices:
+    get:
+      tags:
+      - ware-house-controller
+      summary: avilabledevices
+      operationId: avilabledevicesUsingGET
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceEntity'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+  /warehouse/device/{id}:
+    delete:
+      tags:
+      - ware-house-controller
+      summary: deleteDevice
+      operationId: deleteDeviceUsingDELETE
+      parameters:
+      - name: id
+        in: path
+        description: Device ID
+        required: true
+        schema:
+          type: string
+        example: 63a2e81c2f3d95676fb0ec66
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        204:
+          description: No Content
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WareHouseApiErrorList'
+    patch:
+      tags:
+      - ware-house-controller
+      summary: updateDevice
+      operationId: updateDeviceUsingPATCH
+      parameters:
+      - name: id
+        in: path
+        description: Id of device
+        required: true
+        schema:
+          type: string
+        example: 63a2e81c2f3d95676fb0ec66
+      - name: pinCode
+        in: header
+        description: Device pin code
+        required: true
+        schema:
+          type: string
+        example: "1234567"
+      responses:
+        200:
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/DeviceEntity'
+        204:
+          description: No Content
+          content: {}
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WareHouseApiErrorList'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WareHouseApiErrorList'
+  /warehouse/newdevice:
+    post:
+      tags:
+      - ware-house-controller
+      summary: newDevice
+      operationId: newDeviceUsingPOST
+      responses:
+        201:
+          description: Created
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/DeviceEntity'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+components:
+  schemas:
+    DeviceEntity:
+      title: DeviceEntity
+      type: object
+      properties:
+        id:
+          type: string
+        pinCode:
+          type: string
+        status:
+          type: string
+        temperature:
+          type: integer
+          format: int32
+    WareHouseApiError:
+      title: WareHouseApiError
+      type: object
+      properties:
+        code:
+          type: integer
+          description: code of the error
+          format: int32
+          example: 500
+        description:
+          type: string
+          description: Description with info about the error
+          example: Missing mandatory params
+        level:
+          type: string
+          description: Level
+          example: Error level
+        message:
+          type: string
+          description: message with info about the error
+          example: Request method not supported
+    WareHouseApiErrorList:
+      title: WareHouseApiErrorList
+      type: object
+      properties:
+        errors:
+          type: array
+          description: List of errors
+          items:
+            $ref: '#/components/schemas/WareHouseApiError'
