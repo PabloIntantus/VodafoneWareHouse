@@ -4,7 +4,7 @@ spring:
       database: warehouse
       auto-index-creation: true
       #USE Host and Port if you use docker (You have to run the IMAGE, more info in readme)
-      #host: mymongodb
-      #port: 27017
+      host: localhost
+      port: 27017
       #USE URI if you have a server online (Just run localhost)
-      uri: mongodb+srv://mongodb:mongo_db_1@cluster0.nvcyrtx.mongodb.net/?retryWrites=true&w=majority
+      #uri: mongodb+srv://mongodb:mongo_db_1@cluster0.nvcyrtx.mongodb.net/?retryWrites=true&w=majority

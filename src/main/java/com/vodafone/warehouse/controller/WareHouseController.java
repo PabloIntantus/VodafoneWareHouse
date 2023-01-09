@@ -1,6 +1,7 @@
 package com.vodafone.warehouse.controller;
 
 import com.vodafone.warehouse.entity.DeviceEntity;
+import com.vodafone.warehouse.dto.DeviceResponseDTO;
 import com.vodafone.warehouse.exception.WareHouseApiErrorList;
 import com.vodafone.warehouse.exception.WareHouseException;
 import com.vodafone.warehouse.service.WareHouseService;
@@ -9,6 +10,8 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +53,16 @@ public class WareHouseController {
     public ResponseEntity<List<DeviceEntity>> avilabledevices() {
         List<DeviceEntity> deviceEntityList = wareHouseService.getAvilablesDevice();
         return new ResponseEntity<>(deviceEntityList, HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/pageable-devices")
+    public ResponseEntity<DeviceResponseDTO> avilabledevices(@RequestParam int page, int size) {
+        Page<DeviceEntity> deviceEntityList = wareHouseService.getPageableDevices(PageRequest.of(page,size));
+        DeviceResponseDTO deviceResponseDTO = new DeviceResponseDTO();
+        deviceResponseDTO.setContent(deviceEntityList.getContent());
+        deviceResponseDTO.setTotalElements(deviceEntityList.getTotalElements());
+        return new ResponseEntity<>(deviceResponseDTO, HttpStatus.OK);
 
     }
 

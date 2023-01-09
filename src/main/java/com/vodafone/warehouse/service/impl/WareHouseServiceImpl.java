@@ -8,6 +8,8 @@ import com.vodafone.warehouse.service.WareHouseService;
 import com.vodafone.warehouse.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -66,5 +68,9 @@ public class WareHouseServiceImpl implements WareHouseService {
 
     public void deleteById(String id) {
         deviceRepository.deleteById(id);
+    }
+
+    public Page<DeviceEntity> getPageableDevices(PageRequest of){
+        return deviceRepository.findAll(of);
     }
 }

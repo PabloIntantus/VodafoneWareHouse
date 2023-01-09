@@ -1,6 +1,8 @@
 package com.vodafone.warehouse.repository;
 
 import com.vodafone.warehouse.entity.DeviceEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,7 +14,7 @@ import java.util.List;
  */
 @Repository
 public interface DeviceRepository extends MongoRepository<DeviceEntity, String> {
-    List<DeviceEntity> findAll();
+    Page<DeviceEntity> findAll(Pageable pageable);
 
     /**
      * Find by status list.
